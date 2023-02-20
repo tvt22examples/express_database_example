@@ -1,13 +1,19 @@
 const express = require('express');
 const app=express();
-const port='3000';
+const dotenv=require('dotenv');
+
+dotenv.config();
 
 const bookRouter=require('./controllers/book');
+const borrowerRouter=require('./controllers/borrower');
+const userRouter=require('./controllers/user');
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 app.use('/book',bookRouter);
+app.use('/borrower',borrowerRouter);
+app.use('/user',userRouter);
 
 app.use(function(request, response, next){
     console.log("Olen Middleware 1");
@@ -36,8 +42,8 @@ app.post('/',function(request, response){
     console.log(request.body.etunimi);
 });
 
-app.listen(port,function(){
-    console.log('sovellus kuuntelee porttia '+port);
+app.listen(process.env.port,function(){
+    console.log('sovellus kuuntelee porttia '+process.env.port);
 });
 
 module.exports=app;
