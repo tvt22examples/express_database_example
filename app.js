@@ -7,6 +7,7 @@ dotenv.config();
 const bookRouter=require('./controllers/book');
 const borrowerRouter=require('./controllers/borrower');
 const userRouter=require('./controllers/user');
+const loginRouter=require('./controllers/login');
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended:false}));
 app.use('/book',bookRouter);
 app.use('/borrower',borrowerRouter);
 app.use('/user',userRouter);
+app.use('/login',loginRouter);
 
 app.use(function(request, response, next){
     console.log("Olen Middleware 1");
