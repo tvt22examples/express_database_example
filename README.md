@@ -21,3 +21,5 @@ Ja näihin voidaan viitata koodissa seuraavasti
 process.env.port
 process.env.mysqlSring
 </pre>
+
+Tässä esimerkissä laitoin kuitenkin tiedoston **.env** mukaan GitRepoon.
