@@ -1,6 +1,7 @@
 const express = require('express');
 const app=express();
 const dotenv=require('dotenv');
+const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
@@ -12,10 +13,15 @@ const loginRouter=require('./controllers/login');
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
+//suojaamattomat endpointit
+app.use('/login',loginRouter);
+
+//suojatut endpointit
+app.use(authenticateToken);
 app.use('/book',bookRouter);
 app.use('/borrower',borrowerRouter);
 app.use('/user',userRouter);
-app.use('/login',loginRouter);
+
 
 app.use(function(request, response, next){
     console.log("Olen Middleware 1");
@@ -47,5 +53,24 @@ app.post('/',function(request, response){
 app.listen(process.env.port,function(){
     console.log('sovellus kuuntelee porttia '+process.env.port);
 });
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+  
+    console.log("token = "+token);
+    if (token == null) return res.sendStatus(401)
+  
+    jwt.verify(token, process.env.MY_TOKEN, (err, user) => {
+      console.log(err)
+  
+      if (err) return res.sendStatus(403)
+  
+      req.user = user
+  
+      next()
+    })
+  }
+
 
 module.exports=app;
